@@ -1,7 +1,5 @@
 "use strict";
 
-// DIFFERENT DATA! Contains movement dates, currency and locale
-
 const account1 = {
   owner: "Kavia valakkottil",
   movements: [200, 455.23, -306.5, 25000, -642.21, -133.9, 79.97, 1300],
@@ -45,7 +43,7 @@ const account2 = {
 const accounts = [account1, account2];
 
 /////////////////////////////////////////////////
-// Elements
+
 const labelWelcome = document.querySelector(".welcome");
 const labelDate = document.querySelector(".date");
 const labelBalance = document.querySelector(".balance__value");
@@ -72,7 +70,7 @@ const inputCloseUsername = document.querySelector(".form__input--user");
 const inputClosePin = document.querySelector(".form__input--pin");
 
 /////////////////////////////////////////////////
-// Functions
+
 
 const formatMovementDate = function (date, locale) {
   const calcDaysPassed = (date1, date2) =>
@@ -163,13 +161,13 @@ const createUsernames = function (accs) {
 createUsernames(accounts);
 
 const updateUI = function (acc) {
-  // Display movements
+  
   displayMovements(acc);
 
-  // Display balance
+ 
   calcDisplayBalance(acc);
 
-  // Display summary
+  
   calcDisplaySummary(acc);
 };
 
@@ -178,24 +176,24 @@ const startLogOutTimer = function () {
     const min = String(Math.trunc(time / 60)).padStart(2, 0);
     const sec = String(time % 60).padStart(2, 0);
 
-    // In each call, print the remaining time to UI
+    
     labelTimer.textContent = `${min}:${sec}`;
 
-    // When 0 seconds, stop timer and log out user
+    
     if (time === 0) {
       clearInterval(timer);
       labelWelcome.textContent = "Log in to get started";
       containerApp.style.opacity = 0;
     }
 
-    // Decrease 1s
+    
     time--;
   };
 
-  // Set time to 5 minutes
+ 
   let time = 120;
 
-  // Call the timer every second
+  
   tick();
   const timer = setInterval(tick, 1000);
 
@@ -203,13 +201,9 @@ const startLogOutTimer = function () {
 };
 
 ///////////////////////////////////////
-// Event handlers
+
 let currentAccount, timer;
 
-// FAKE ALWAYS LOGGED IN
-// currentAccount = account1;
-// updateUI(currentAccount);
-// containerApp.style.opacity = 100;
 
 btnLogin.addEventListener("click", function (e) {
   // Prevent form from submitting
@@ -227,7 +221,7 @@ btnLogin.addEventListener("click", function (e) {
     }`;
     containerApp.style.opacity = 100;
 
-    // Create current date and time
+    
     const now = new Date();
     const options = {
       hour: "numeric",
@@ -237,30 +231,22 @@ btnLogin.addEventListener("click", function (e) {
       year: "numeric",
       // weekday: 'long',
     };
-    // const locale = navigator.language;
-    // console.log(locale);
-
+  
     labelDate.textContent = new Intl.DateTimeFormat(
       currentAccount.locale,
       options
     ).format(now);
 
-    // const day = `${now.getDate()}`.padStart(2, 0);
-    // const month = `${now.getMonth() + 1}`.padStart(2, 0);
-    // const year = now.getFullYear();
-    // const hour = `${now.getHours()}`.padStart(2, 0);
-    // const min = `${now.getMinutes()}`.padStart(2, 0);
-    // labelDate.textContent = `${day}/${month}/${year}, ${hour}:${min}`;
-
-    // Clear input fields
+    
+    
     inputLoginUsername.value = inputLoginPin.value = "";
     inputLoginPin.blur();
 
-    // Timer
+   
     if (timer) clearInterval(timer);
     timer = startLogOutTimer();
 
-    // Update UI
+    
     updateUI(currentAccount);
   }
 });
@@ -279,18 +265,18 @@ btnTransfer.addEventListener("click", function (e) {
     currentAccount.balance >= amount &&
     receiverAcc?.username !== currentAccount.username
   ) {
-    // Doing the transfer
+    
     currentAccount.movements.push(-amount);
     receiverAcc.movements.push(amount);
 
-    // Add transfer date
+    
     currentAccount.movementsDates.push(new Date().toISOString());
     receiverAcc.movementsDates.push(new Date().toISOString());
 
-    // Update UI
+    
     updateUI(currentAccount);
 
-    // Reset timer
+    
     clearInterval(timer);
     timer = startLogOutTimer();
   }
@@ -309,13 +295,13 @@ btnLoan.addEventListener("click", function (e) {
       // Add movement
       currentAccount.movements.push(amount);
 
-      // Add loan date
+      
       currentAccount.movementsDates.push(new Date().toISOString());
 
-      // Update UI
+     
       updateUI(currentAccount);
 
-      // Reset timer
+     
       clearInterval(timer);
       timer = startLogOutTimer();
     }, 2500);
@@ -336,11 +322,10 @@ btnClose.addEventListener("click", function (e) {
     console.log(index);
     // .indexOf(23)
 
-    // Delete account
+    
     accounts.splice(index, 1);
 
-    // Hide UI
-    containerApp.style.opacity = 0;
+    p.style.opacity = 0;
   }
 
   inputCloseUsername.value = inputClosePin.value = "";
